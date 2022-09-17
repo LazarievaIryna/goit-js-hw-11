@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { fetchPhoto } from './fetchPhoto';
 import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
@@ -13,12 +12,10 @@ let page = 1;
 const PER_PAGE = 40;
 let searchQuery = '';
 let lightbox = new SimpleLightbox('.photo-card a');
-// refs.loadMoreBtn.classList.add('is-hidden');
-//слушатель событий на форме
 
 const onSearch = async evt => {
   evt.preventDefault();
-  //значение инпута, идет в запрос на сервер
+
   refs.loadMoreBtn.classList.add('is-hidden');
   searchQuery = evt.currentTarget.elements.searchQuery.value;
   console.log(searchQuery);
@@ -41,17 +38,13 @@ const onSearch = async evt => {
     }
     Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
     renderPhoto(data.hits);
-    
+
     lightbox.refresh();
     refs.loadMoreBtn.classList.remove('is-hidden');
   } catch (error) {
     console.log(error);
   }
-
-  
-  
 };
-
 
 function renderPhoto(photos) {
   const markup = photos
