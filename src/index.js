@@ -13,7 +13,7 @@ let page = 1;
 const PER_PAGE = 40;
 let searchQuery = '';
 let lightbox = new SimpleLightbox('.photo-card a');
-
+// refs.loadMoreBtn.classList.add('is-hidden');
 //слушатель событий на форме
 
 const onSearch = async evt => {
