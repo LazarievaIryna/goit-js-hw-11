@@ -15,7 +15,7 @@ let lightbox = new SimpleLightbox('.photo-card a');
 
 const onSearch = async evt => {
   evt.preventDefault();
-
+  page = 1;
   refs.loadMoreBtn.classList.add('is-hidden');
   searchQuery = evt.currentTarget.elements.searchQuery.value;
   console.log(searchQuery);
@@ -29,6 +29,10 @@ const onSearch = async evt => {
     const { data } = await fetchPhoto(searchQuery, page, PER_PAGE);
     console.log(data.totalHits);
     page = 1;
+//
+    
+    //
+    
 
     if (data.totalHits === 0) {
       Notiflix.Notify.failure(
@@ -37,10 +41,26 @@ const onSearch = async evt => {
       return;
     }
     Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
+    //
+    
+    //
     renderPhoto(data.hits);
+//
+    let countPage = Math.ceil(data.totalHits / PER_PAGE);
+    console.log(countPage);
+
+    if (page >= countPage) {
+      refs.loadMoreBtn.classList.add('is-hidden');
+    }
+    else {
+      refs.loadMoreBtn.classList.remove('is-hidden');
+    }
+    //
+
+
 
     lightbox.refresh();
-    refs.loadMoreBtn.classList.remove('is-hidden');
+    
   } catch (error) {
     console.log(error);
   }
@@ -83,10 +103,12 @@ function renderPhoto(photos) {
 }
 
 const onLoadMore = async () => {
+  page += 1;
   try {
     const { data } = await fetchPhoto(searchQuery, page, PER_PAGE);
-    const countPage = data.totalHits / PER_PAGE;
+    const countPage = Math.ceil(data.totalHits / PER_PAGE);
     console.log(countPage);
+    
     if (page >= countPage) {
       Notiflix.Notify.failure(
         "We're sorry, but you've reached the end of search results."
@@ -96,7 +118,7 @@ const onLoadMore = async () => {
     }
     renderPhoto(data.hits);
     lightbox.refresh();
-    page += 1;
+    
     console.log(page);
   } catch (error) {
     console.log(error);
